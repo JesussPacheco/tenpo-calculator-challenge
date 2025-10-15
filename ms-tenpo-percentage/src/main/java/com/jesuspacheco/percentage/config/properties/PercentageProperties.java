@@ -20,3 +20,4 @@ public class PercentageProperties {
     private BigDecimal max = new BigDecimal("15.00");
     private Integer scale = 2;
 }
+
