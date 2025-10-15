@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 spring:
   application:
@@ -9,11 +9,20 @@ spring:
     virtual:
       enabled: true
 
+app:
+  percentage:
+    min: 5.00
+    max: 15.00
+    scale: 2
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+  endpoint:
+    health:
+      show-details: always
 
 logging:
   pattern:
