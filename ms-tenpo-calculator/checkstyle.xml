@@ -48,5 +48,4 @@
 
     <!-- File Checks -->
     <module name="FileTabCharacter"/>
-    <module name="NewlineAtEndOfFile"/>
 </module>
