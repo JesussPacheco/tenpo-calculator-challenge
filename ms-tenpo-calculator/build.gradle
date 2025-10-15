@@ -60,6 +60,13 @@ dependencies {
     testImplementation 'org.testcontainers:postgresql:1.19.0'
     testImplementation 'org.testcontainers:junit-jupiter:1.19.0'
     testImplementation 'io.projectreactor:reactor-test'
+
+    // Hibernate JSONB support
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.7.0'
+
+    // MockWebServer for testing HTTP clients
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+
 }
 
 tasks.named('test') {
