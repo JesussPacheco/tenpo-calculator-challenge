@@ -1,0 +1,286 @@
+{
+  "info": {
+    "name": "Tenpo Calculator Challenge",
+    "description": "API REST para cálculo con porcentaje dinámico",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "calculator_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "percentage_url",
+      "value": "http://localhost:8081",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Checks",
+      "item": [
+        {
+          "name": "Calculator Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{calculator_url}}/actuator/health",
+              "host": ["{{calculator_url}}"],
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "Percentage Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{percentage_url}}/actuator/health",
+              "host": ["{{percentage_url}}"],
+              "path": ["actuator", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Calculator - Success",
+      "item": [
+        {
+          "name": "Calculate - Basic",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"num1\": 100,\n  \"num2\": 200\n}"
+            },
+            "url": {
+              "raw": "{{calculator_url}}/api/v1/calculator/sum",
+              "host": ["{{calculator_url}}"],
+              "path": ["api", "v1", "calculator", "sum"]
+            }
+          }
+        },
+        {
+          "name": "Calculate - With Decimals",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"num1\": 123.45,\n  \"num2\": 678.90\n}"
+            },
+            "url": {
+              "raw": "{{calculator_url}}/api/v1/calculator/sum",
+              "host": ["{{calculator_url}}"],
+              "path": ["api", "v1", "calculator", "sum"]
+            }
+          }
+        },
+        {
+          "name": "Calculate - Large Numbers",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"num1\": 9999999.99,\n  \"num2\": 8888888.88\n}"
+            },
+            "url": {
+              "raw": "{{calculator_url}}/api/v1/calculator/sum",
+              "host": ["{{calculator_url}}"],
+              "path": ["api", "v1", "calculator", "sum"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Calculator - Errors",
+      "item": [
+        {
+          "name": "Missing num1",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"num2\": 200\n}"
+            },
+            "url": {
+              "raw": "{{calculator_url}}/api/v1/calculator/sum",
+              "host": ["{{calculator_url}}"],
+              "path": ["api", "v1", "calculator", "sum"]
+            }
+          }
+        },
+        {
+          "name": "Negative Number",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"num1\": -100,\n  \"num2\": 200\n}"
+            },
+            "url": {
+              "raw": "{{calculator_url}}/api/v1/calculator/sum",
+              "host": ["{{calculator_url}}"],
+              "path": ["api", "v1", "calculator", "sum"]
+            }
+          }
+        },
+        {
+          "name": "Invalid Value",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"num1\": \"abc\",\n  \"num2\": 200\n}"
+            },
+            "url": {
+              "raw": "{{calculator_url}}/api/v1/calculator/sum",
+              "host": ["{{calculator_url}}"],
+              "path": ["api", "v1", "calculator", "sum"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "History",
+      "item": [
+        {
+          "name": "First Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{calculator_url}}/api/v1/history?page=0&size=10",
+              "host": ["{{calculator_url}}"],
+              "path": ["api", "v1", "history"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Second Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{calculator_url}}/api/v1/history?page=1&size=10",
+              "host": ["{{calculator_url}}"],
+              "path": ["api", "v1", "history"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Large Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{calculator_url}}/api/v1/history?page=0&size=50",
+              "host": ["{{calculator_url}}"],
+              "path": ["api", "v1", "history"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "50"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Percentage Service",
+      "item": [
+        {
+          "name": "Get Percentage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{percentage_url}}/api/percentage",
+              "host": ["{{percentage_url}}"],
+              "path": ["api", "percentage"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "OpenAPI Spec",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{calculator_url}}/v3/api-docs",
+          "host": ["{{calculator_url}}"],
+          "path": ["v3", "api-docs"]
+        }
+      }
+    }
+  ]
+}
