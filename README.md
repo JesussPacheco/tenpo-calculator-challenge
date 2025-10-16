@@ -76,14 +76,15 @@ API REST para cálculo con porcentaje dinámico y almacenamiento de historial.
 ### Opción 1: Build desde código fuente
 ```bash
 git clone https://github.com/JesussPacheco/tenpo-calculator-challenge.git
-cd tenpo-challenge
+cd tenpo-calculator-challenge
+
 docker-compose up
 ```
 
 ### Opción 2: Desde Docker Hub
 ```bash
 git clone https://github.com/JesussPacheco/tenpo-calculator-challenge.git
-cd tenpo-challenge
+cd tenpo-calculator-challenge
 docker-compose -f docker-compose.remote.yml up
 ```
 
