@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tenpo-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tenpo_calculator}
+      POSTGRES_USER: ${POSTGRES_USER:-tenpo_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-TenpoCh4ll3ng3!}
+    ports:  
+      - "5434:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tenpo_user} -d ${POSTGRES_DB:-tenpo_calculator}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - tenpo-network
+
+  percentage-service:
+    image: jessy25/tenpo-percentage:latest
+    container_name: tenpo-percentage
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: ${PERCENTAGE_PORT:-8081}
+      PERCENTAGE_MIN: ${PERCENTAGE_MIN:-0.00}
+      PERCENTAGE_MAX: ${PERCENTAGE_MAX:-100.00}
+      PERCENTAGE_SCALE: ${PERCENTAGE_SCALE:-2}
+      LOG_LEVEL_ROOT: ${LOG_LEVEL_ROOT:-INFO}
+      LOG_LEVEL_APP: ${LOG_LEVEL_APP:-INFO}
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+    networks:
+      - tenpo-network
+
+  calculator-service:
+    image: jessy25/tenpo-calculator:latest
+    container_name: tenpo-calculator
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-jdbc:postgresql://postgres:5432/tenpo_calculator}
+      DATABASE_USER: ${DATABASE_USER:-tenpo_user}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-TenpoCh4ll3ng3!}
+      DB_POOL_MAX_SIZE: ${DB_POOL_MAX_SIZE:-10}
+      DB_POOL_MIN_IDLE: ${DB_POOL_MIN_IDLE:-3}
+      DB_CONNECTION_TIMEOUT: ${DB_CONNECTION_TIMEOUT:-30000}
+      
+      CACHE_EXPIRATION: ${CACHE_EXPIRATION:-30m}
+      CACHE_MAX_SIZE: ${CACHE_MAX_SIZE:-100}
+      
+      PERCENTAGE_SERVICE_URL: ${PERCENTAGE_SERVICE_URL:-http://percentage-service:8081}
+      PERCENTAGE_TIMEOUT: ${PERCENTAGE_TIMEOUT:-5s}
+      PERCENTAGE_MAX_RETRIES: ${PERCENTAGE_MAX_RETRIES:-3}
+      
+      LOG_LEVEL_ROOT: ${LOG_LEVEL_ROOT:-INFO}
+      LOG_LEVEL_APP: ${LOG_LEVEL_APP:-INFO}
+      LOG_LEVEL_SPRING_WEB: ${LOG_LEVEL_SPRING_WEB:-INFO}
+      LOG_LEVEL_HIBERNATE_SQL: ${LOG_LEVEL_HIBERNATE_SQL:-ERROR}
+      LOG_LEVEL_REACTOR: ${LOG_LEVEL_REACTOR:-INFO}
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      percentage-service:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 90s
+    networks:
+      - tenpo-network
+
+networks:
+  tenpo-network:
+    driver: bridge
+    name: tenpo-network
+
+volumes:
+  postgres-data:
+    driver: local
+    name: tenpo-postgres-data

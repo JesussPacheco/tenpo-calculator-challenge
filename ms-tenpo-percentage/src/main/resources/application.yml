@@ -1,0 +1,32 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: ms-tenpo-percentage
+
+  threads:
+    virtual:
+      enabled: true
+
+app:
+  percentage:
+    min: 5.00
+    max: 15.00
+    scale: 2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com.jesuspacheco.percentage: INFO

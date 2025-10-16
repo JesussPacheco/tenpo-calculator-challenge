@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:16-alpine:///tenpo_test
+    username: test
+    password: test
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      connection-timeout: 10000
+
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+app:
+  cache:
+    expiration: 5m
+    maximum-size: 50
+
+  external:
+    percentage:
+      url: http://localhost:8081
+      timeout: 3s
+      max-retries: 2
+
+logging:
+  level:
+    root: WARN
+    com.jesuspacheco.tenpo: INFO
+    org.testcontainers: INFO
+    org.hibernate.SQL: WARN
+    org.springframework.web: WARN
+    reactor.netty: WARN
