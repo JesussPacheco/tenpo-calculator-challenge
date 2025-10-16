@@ -1,0 +1,35 @@
+# Build artifacts
+build/
+target/
+*.jar
+.gradle/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# Tests
+src/test/
+
+# Git
+.git/
+.gitignore
+
+# Docs
+*.md
+
+# Env
+.env
+*.env
+application-dev.yml
+application-local.yml
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db

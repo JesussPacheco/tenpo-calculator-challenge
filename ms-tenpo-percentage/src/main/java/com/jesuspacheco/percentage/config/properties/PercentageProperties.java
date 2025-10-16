@@ -16,7 +16,8 @@ import java.math.BigDecimal;
 @Setter
 public class PercentageProperties {
 
-    private BigDecimal min = new BigDecimal("5.00");
-    private BigDecimal max = new BigDecimal("15.00");
-    private Integer scale = 2;
+    private BigDecimal min;
+    private BigDecimal max;
+    private Integer scale;
 }
+
