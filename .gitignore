@@ -9,8 +9,13 @@ build/
 *.iml
 *.iws
 *.ipr
-out/
-.vscode/
+# IDE build artifacts
+/out/
+**/out/production/
+**/out/test/
+
+# Exception: domain port interfaces
+!src/**/domain/port/out/
 
 # Eclipse
 .classpath
